@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends \TCG\Voyager\Models\User
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,12 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin',
-        'avatar',
-        'phone',
-        'address',
-        'last_login_at',
-        'last_login_ip',
     ];
 
     /**
@@ -40,22 +33,15 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'is_admin' => 'boolean',
-        'last_login_at' => 'datetime',
-    ];
-
-    /**
-     * Get the activity logs for the user.
-     */
-    public function activityLogs()
+    protected function casts(): array
     {
-        return $this->hasMany(ActivityLog::class);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }
